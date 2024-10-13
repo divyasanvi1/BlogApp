@@ -1,0 +1,1 @@
+In Redux Toolkit, it’s possible to mutate the state directly inside a reducer function because Redux Toolkit uses a library called Immer. Immer converts these mutations into new immutable state updates behind the scenes, which is why direct assignment like state.status = true works.

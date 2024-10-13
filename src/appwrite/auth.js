@@ -1,5 +1,7 @@
 import config from "../config/config";
 import { Client ,Account} from "appwrite";
+import { ID } from 'appwrite';
+
 export class AuthService{
     client= new Client();
     account;
@@ -15,8 +17,10 @@ export class AuthService{
     {
         try{
             const userAccount=await this.account.create(ID.unique(),email,password,name);
+            console.log("hii from auth");
             if(userAccount)
                 {
+                    console.log("hii");
                      return this.login({email,password});
                 }
                 else
@@ -26,6 +30,7 @@ export class AuthService{
         }
         catch(error)
         {
+            console.error("Account creation failed:", error.message); 
             throw error;
         }
     }

@@ -1,4 +1,4 @@
-import config from "../config/config";
+import config from "../config/config.js";
 import { Client ,ID, Databases, Storage, Query} from "appwrite";
 
 export class Service{
@@ -9,8 +9,8 @@ export class Service{
     constructor()
     {
         this.client
-        .setEndpoint(conf.appwriteUrl)
-        .setProject(conf.appwriteProjectID);
+        .setEndpoint(config.appwriteUrl)
+        .setProject(config.appwriteProjectId);
         this.databases= new Databases(this.client)
         this.bucket=new Storage(this.client)
     }
@@ -73,10 +73,11 @@ export class Service{
     }
 
     async getPost(slug){
+        console.log("Slug:", slug);  
         try{
              return await this.databases.getDocument(
                 config.appwriteDatabaseId,
-                conf.appwriteCollectionId,
+                config.appwriteCollectionId,
                 slug
              )
         }
@@ -90,7 +91,7 @@ export class Service{
         try{
              return await this.databases.listDocuments(
                 config.appwriteDatabaseId,
-                conf.appwriteCollectionId,
+                config.appwriteCollectionId,
                 queries
              )
         }
@@ -105,7 +106,7 @@ export class Service{
     {
         try{
             return await this.bucket.createFile(
-                conf.appwriteBucketId,
+                config.appwriteBucketId,
                 ID.unique(),
                 file
             )
@@ -120,7 +121,7 @@ export class Service{
     {
         try{
             await this.bucket.deleteFile(
-                conf.appwriteBucketId,
+                config.appwriteBucketId,
                 fileId
             )
             return true
@@ -133,10 +134,14 @@ export class Service{
 
     getFilePreview(fileId)
     {
-            return this.bucket.getFilePreview(
-                conf.appwriteBucketId,
+        console.log("hiii file preview1",config.appwriteBucketId);
+        console.log("hiii file preview",fileId);
+            const response= this.bucket.getFilePreview(
+                config.appwriteBucketId,
                 fileId
             )
+            console.log("response file preview",response);
+            return response;   
     }
 }
 

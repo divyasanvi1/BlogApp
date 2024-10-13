@@ -15,10 +15,16 @@ function Signup() {
     const create=async(data)=>{
        setError('')
        try{
-           
-           const userInfo=await authService.createAccount(data);
+        console.log("hii");
+           const userInfo=await authService.createAccount({
+            email: data.email,
+                password: data.password,
+                name: data.name
+           });
+          {userInfo?console.log(userInfo):console.log("no")}
            if(userInfo)
            {
+            console.log("hii12");
               const userData=await authService.getCurrentUser();
               if(userData)
               {
@@ -56,7 +62,7 @@ function Signup() {
             <Input
                   label="Name: "
                   placeholder="Enter your Name"
-                  {...register("Name",{
+                  {...register("name",{
                     required:true,
                   })}
                 />
@@ -76,7 +82,7 @@ function Signup() {
                   label="Password: "
                   placeholder="Enter your Password"
                   type="Password"
-                  {...register("Password",{
+                  {...register("password",{
                     required:true,
                     }
                   )}

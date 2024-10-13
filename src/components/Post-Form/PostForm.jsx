@@ -18,10 +18,14 @@ function PostForm({post}) {
     })
      
     const navigate=useNavigate()
-    const userData=useSelector(state=>state.user.userData)
+    console.log("useedaataa111");
+    const userData=useSelector((state)=>state.auth.userData)
+    
+    const { userData: { $id :userIdRedux} }=userData;
+    console.log("userData ID:", userIdRedux);
+    console.log("useedaataa222");
     
     const submit=async(data)=>{
-
         if(post)
         {
             const file=data.image[0]? appwriteService.uploadFile(data.image[0]) : null
@@ -39,24 +43,28 @@ function PostForm({post}) {
 
             if(dbPost)
             {
-                navigate('/post/${dbPost.$id}')
+                navigate(`/post/${dbPost.$id}`)
             }
         }
         else
         {
-            const file=data.image[0]? appwriteService.uploadFile(data.image[0]) : null
-
+            const file=data.image[0]? await appwriteService.uploadFile(data.image[0]) : null
+              console.log("file:", file);
             if(file)
             {
                 const fileId= file.$id;
                 data.featuredImage=fileId;
+                console.log("fileId:", fileId);
                const dbPost= await appwriteService.createPost({
                     ...data,
-                    userId:userData.$id,
+                    userId:userIdRedux,
                 })
+                console.log("data:", data);
+                console.log("dbPost:", dbPost);
+                console.log("dbpostid",dbPost.$id);
                 if(dbPost)
                     {
-                        navigate('/post/${dbPost.$id}')
+                        navigate(`/post/${dbPost.$id}`)
                     }
             }
         }

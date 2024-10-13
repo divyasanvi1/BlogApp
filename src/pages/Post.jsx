@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import appwriteService from "../appwrite/config";
+import appwriteService from "../appwrite/configuration";
 import { Button, Container } from "../components";
 import parse from "html-react-parser";
 import { useSelector } from "react-redux";
@@ -12,16 +12,24 @@ function Post() {
     const navigate=useNavigate();
 
     const userData=useSelector((state)=>state.auth.userData);
-    const isAuthor=post && userData? post.userId===userData.$id:false;
+    const { userData: { $id :userIdRedux} }=userData;
+    const isAuthor=post && userData? post.userId===userIdRedux:false;
 
+   
     useEffect(()=>{
         if(slug)
         {
            appwriteService.getPost(slug).then((post)=>{
+            console.log("hii");
+            console.log("post",post);
+            console.log("urlpost",appwriteService.getFilePreview(post.featuredImage).href);
+            
                if(post)
                {
                 setPost(post);
+                
                }
+               else navigate("/");
            });
         }
         else
@@ -39,11 +47,16 @@ function Post() {
          }
         });
     };
+    console.log("post11",post);
+    
+
   return post?(
     <div className="py-8">
         <Container>
             <div className="w-full flex justify-center mb-4 relative border rounded-xl p-2">
-                 <img src={appwriteService.getFilePreview(post.featuredImage)}
+           
+                 <img
+                  src={appwriteService.getFilePreview(post.featuredImage).href}
                  alt={post.title}
                  className="rounded-xl"
                  />
