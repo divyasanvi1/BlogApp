@@ -15,7 +15,9 @@ import EditPost from './pages/EditPost.jsx'
 import Post from './pages/Post.jsx'
 import Forget from "./components/password/Forget.jsx"
 import Recover from './components/password/Recover.jsx'
-
+import Notfound from './pages/NotFound.jsx'
+import AboutUs from './pages/About.jsx'
+import ContactUs from './pages/Contact.jsx'
 
 
 const router=createBrowserRouter([
@@ -89,6 +91,18 @@ const router=createBrowserRouter([
             <Recover />
           </AuthLayout>
         ),
+      },
+      {
+        path: "/about",  // About Us page route
+        element: <AboutUs />
+      },
+      {
+        path: "/contact",  // Contact Us page route
+        element: <ContactUs />
+      },
+      {
+        path: '*',  
+        element: <Notfound />,  // Display the NotFound component for unmatched paths
       },
     ],
 
