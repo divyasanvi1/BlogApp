@@ -1,4 +1,4 @@
-import React,{useCallback,useEffect} from 'react'
+import React,{useCallback} from 'react'
 import { useForm } from 'react-hook-form'
 import {Button, Input, Select, RTE} from "../index"
 import  appwriteService from "../../appwrite/configuration";
@@ -17,6 +17,7 @@ export default function PostForm({ post }) {
 
     const navigate = useNavigate();
     const userData = useSelector((state) => state.auth.userData);
+    console.log("User data from Redux:", userData);
 
     const submit = async (data) => {
         if (post) {
@@ -40,7 +41,11 @@ export default function PostForm({ post }) {
             if (file) {
                 const fileId = file.$id;
                 data.featuredImage = fileId;
-                const dbPost = await appwriteService.createPost({ ...data, userId: userData.$id });
+                console.log("userData in submit2:", userData);
+
+                const userIdRedux = userData?.userData?.$id || userData?.$id;
+                console.log("userIdRedux in submit2:", userIdRedux);
+                const dbPost = await appwriteService.createPost({ ...data, userId: userIdRedux });
 
                 if (dbPost) {
                     navigate(`/post/${dbPost.$id}`);

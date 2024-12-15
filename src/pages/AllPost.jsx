@@ -33,7 +33,7 @@ function AllPost() {
         
                                 if (post.featuredImage) {
                                     try {
-                                        const file = await appwriteService.getFilePreview(post.featuredImage);
+                                        const file =appwriteService.getFilePreview(post.featuredImage);
                                         featuredImageUrl = file?.href || null;
                                     } catch (error) {
                                         console.error("Error fetching image:", error);

@@ -1,10 +1,12 @@
 import React,{useState} from 'react'
 import {Link, useNavigate} from 'react-router-dom'
 import {login as authLogin} from '../store/authSlice'
-import {Button,Input,Logo} from './index'
+import {Button,Input} from './index'
 import { useDispatch } from 'react-redux'
 import authService from '../appwrite/auth'
 import {useForm} from "react-hook-form"
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Login() {
     const navigate=useNavigate()
@@ -22,41 +24,39 @@ function Login() {
             if(userData)
             {
                 dispatch(authLogin(userData));
+                toast.success('Logged in successfully!');
                 navigate("/");
             }
           }
         }
         catch(error){
             setError(error.message)
+            toast.error(`Login failed: ${error.message}`);
         }
-    }
+    };
   return (
     <div className='flex items-center justify-center w-full'>
         <div className={`mx-auto w-full max-w-lg bg-gray-100 rounded-xl p-10 border border-black/10`}>
-        <div className="mb-2 flex justify-center">
-                    <span className="inline-block w-full max-w-[100px]">
-                        <Logo width="100%" />
-                    </span>
-        </div>
+
         <h2 className="text-center text-2xl font-bold leading-tight">Sign in to your account</h2>
-        <p className="mt-2 text-center text-base text-black/60">
-                    Don&apos;t have any account?&nbsp;
-                    <Link
-                        to="/signup"
-                        className="font-medium text-primary transition-all duration-200 hover:underline"
-                    >
-                        Sign Up
-                    </Link>
-        </p>
-        <p className="mt-2 text-center text-base text-black/60">
-                    Forgot passowrd?
-                    <Link
-                        to="/Forget"
-                        className="font-medium text-primary transition-all duration-200 hover:underline"
-                    >
-                        Recovery
-                    </Link>
-        </p>
+<p className="mt-2 text-center text-base text-black/60">
+    Don&apos;t have an account?&nbsp;
+    <Link
+        to="/signup"
+        className="font-medium text-blue-600 transition-all duration-300 ease-in-out hover:text-blue-800 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
+    >
+        Sign Up
+    </Link>
+</p>
+<p className="mt-2 text-center text-base text-black/60">
+    <Link
+        to="/forgot"
+        className="font-medium text-blue-600 transition-all duration-300 ease-in-out hover:text-blue-800 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
+    >
+        Forgot password?
+    </Link>
+</p>
+
         {error && <p className='text-red-500  text-center'>{error}</p>}
         <form onSubmit={handleSubmit(login)} className='mt-8'>
             <div className='space-y-5'>
@@ -88,6 +88,7 @@ function Login() {
             </div>
         </form>
         </div>
+        <ToastContainer />
     </div>
   )
 }

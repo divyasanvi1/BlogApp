@@ -12,12 +12,10 @@ const Forget=()=>{
         try{
             await authService.recoverPassword(email);
             toast.success('Recovery email sent! Check your inbox.');
-            alert('Recovery email sent! Check your inbox.');
             setEmail('');
         }
         catch (error) {
-          toast.error('Failed to send recovery email. Please try again.'); 
-            alert('Failed to send recovery email. Please try again.');
+          toast.error('Failed to send recovery email. Please try again.');
         }
       };
     return( 
