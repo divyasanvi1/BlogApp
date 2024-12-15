@@ -48,6 +48,15 @@ function Login() {
                         Sign Up
                     </Link>
         </p>
+        <p className="mt-2 text-center text-base text-black/60">
+                    Forgot passowrd?
+                    <Link
+                        to="/Forget"
+                        className="font-medium text-primary transition-all duration-200 hover:underline"
+                    >
+                        Recovery
+                    </Link>
+        </p>
         {error && <p className='text-red-500  text-center'>{error}</p>}
         <form onSubmit={handleSubmit(login)} className='mt-8'>
             <div className='space-y-5'>

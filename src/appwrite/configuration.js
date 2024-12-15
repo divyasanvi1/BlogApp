@@ -71,7 +71,27 @@ export class Service{
         return false;
       }
     }
+    
+     async getFeaturedImageByUserId (userId){
+        try {
+            const response = await this.databases.listDocuments(
+                config.appwriteDatabaseId,                // Your Appwrite Database ID
+                config.appwriteCollectionId, // Collection ID for featured images
+                [Query.equal("userId", userId)]           // Query for userId
+            );
+    
+            if (response.documents.length > 0) {
+                return response.documents; // Return the first matching document
+            }
+    
+            return false; // Return null if no match found
+        } catch (error) {
+            console.error("Appwrite service :: getFeaturedImageByUserId :: error", error);
+            return false; // Return null if an error occurs
+        }
+    };
 
+    
     async getPost(slug){
         console.log("Slug:", slug);  
         try{
@@ -105,6 +125,7 @@ export class Service{
     async uploadFile(file)
     {
         try{
+            console.log("hi file")
             return await this.bucket.createFile(
                 config.appwriteBucketId,
                 ID.unique(),

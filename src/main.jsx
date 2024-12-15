@@ -13,6 +13,8 @@ import AddPost from "./pages/AddPost.jsx"
 import AllPost from "./pages/AllPost.jsx"
 import EditPost from './pages/EditPost.jsx'
 import Post from './pages/Post.jsx'
+import Forget from "./components/password/Forget.jsx"
+import Recover from './components/password/Recover.jsx'
 
 
 
@@ -72,10 +74,26 @@ const router=createBrowserRouter([
         path: "/post/:slug",
         element: <Post />,
     },
+    {
+        path: "/forget", // Add Forget Password Route
+        element: (
+          <AuthLayout authentication={false}>
+            <Forget />
+          </AuthLayout>
+        ),
+      },
+      {
+        path: "/resetpassword", // Add Reset Password Route
+        element: (
+          <AuthLayout authentication={false}>
+            <Recover />
+          </AuthLayout>
+        ),
+      },
     ],
 
   },
-])
+]);
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
