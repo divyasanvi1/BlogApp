@@ -50,7 +50,7 @@ function Login() {
 </p>
 <p className="mt-2 text-center text-base text-black/60">
     <Link
-        to="/forgot"
+        to="/forget"
         className="font-medium text-blue-600 transition-all duration-300 ease-in-out hover:text-blue-800 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
     >
         Forgot password?
