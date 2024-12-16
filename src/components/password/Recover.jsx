@@ -25,12 +25,10 @@ const Recover=()=>{
        try{
           await authService.updateRecovery(userId,secret,newPassword,confirmPassword);
           toast.success('Password updated successfully!');
-          alert('Password updated successfully!');
        }
        catch(error){
         console.log('Failed to update password:', error);
         toast.error('Failed to update password. Please try again.');
-        alert('Error updating password. Please try again.');
        }
     }
 
