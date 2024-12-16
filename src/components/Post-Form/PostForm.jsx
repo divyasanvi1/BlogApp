@@ -3,8 +3,6 @@ import { useForm } from 'react-hook-form'
 import {Button, Input, Select, RTE} from "../index"
 import  appwriteService from "../../appwrite/configuration";
 import { useNavigate } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify';  // Import toast
-import 'react-toastify/dist/ReactToastify.css';  // Import the styles for toast
 import { useSelector } from 'react-redux';
 
 export default function PostForm({ post }) {
@@ -35,7 +33,6 @@ export default function PostForm({ post }) {
             });
 
             if (dbPost) {
-                toast.success('Post updated successfully!');
                 navigate(`/post/${dbPost.$id}`);
             }
         } else {
@@ -51,7 +48,6 @@ export default function PostForm({ post }) {
                 const dbPost = await appwriteService.createPost({ ...data, userId: userIdRedux });
 
                 if (dbPost) {
-                    toast.success('Post created successfully!');
                     navigate(`/post/${dbPost.$id}`);
                 }
             }
@@ -80,7 +76,6 @@ export default function PostForm({ post }) {
     }, [watch, slugTransform, setValue]);
 
     return (
-        <>
         <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
             <div className="w-2/3 px-2">
                 <Input
@@ -128,8 +123,5 @@ export default function PostForm({ post }) {
                 </Button>
             </div>
         </form>
-        <ToastContainer />
-        </>
-
     );
 }
