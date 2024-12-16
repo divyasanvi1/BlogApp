@@ -1,96 +1,112 @@
-import React,{useState} from 'react'
-import {Link, useNavigate} from 'react-router-dom'
-import {login as authLogin} from '../store/authSlice'
-import {Button,Input} from './index'
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { login as authLogin } from '../store/authSlice'
+import { Button, Input } from './index'
 import { useDispatch } from 'react-redux'
 import authService from '../appwrite/auth'
-import {useForm} from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function Login() {
-    const navigate=useNavigate()
-    const dispatch=useDispatch()
-    const {register, handleSubmit}=useForm()
-    const [error,setError]=useState("")
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const { register, handleSubmit } = useForm()
+    const [error, setError] = useState("")
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
-    const login=async(data)=>{
+    const login = async (data) => {
         setError("")
-        try{
-          const session=await authService.login(data)
-          if(session)
-          {
-            const userData=await authService.getCurrentUser()
-            if(userData)
-            {
-                dispatch(authLogin(userData));
-                toast.success('Logged in successfully!');
-                navigate("/");
+        try {
+            const session = await authService.login(data)
+            if (session) {
+                const userData = await authService.getCurrentUser()
+                if (userData) {
+                    dispatch(authLogin(userData));
+                    toast.success('Logged in successfully!');
+                    navigate("/");
+                }
             }
-          }
-        }
-        catch(error){
+        } catch (error) {
             setError(error.message)
             toast.error(`Login failed: ${error.message}`);
         }
     };
-  return (
-    <div className='flex items-center justify-center w-full'>
-        <div className={`mx-auto w-full max-w-lg bg-gray-100 rounded-xl p-10 border border-black/10`}>
 
-        <h2 className="text-center text-2xl font-bold leading-tight">Sign in to your account</h2>
-<p className="mt-2 text-center text-base text-black/60">
-    Don&apos;t have an account?&nbsp;
-    <Link
-        to="/signup"
-        className="font-medium text-blue-600 transition-all duration-300 ease-in-out hover:text-blue-800 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
-    >
-        Sign Up
-    </Link>
-</p>
-<p className="mt-2 text-center text-base text-black/60">
-    <Link
-        to="/forget"
-        className="font-medium text-blue-600 transition-all duration-300 ease-in-out hover:text-blue-800 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
-    >
-        Forgot password?
-    </Link>
-</p>
+    const togglePasswordVisibility = () => {
+        setIsPasswordVisible(!isPasswordVisible);
+    }
 
-        {error && <p className='text-red-500  text-center'>{error}</p>}
-        <form onSubmit={handleSubmit(login)} className='mt-8'>
-            <div className='space-y-5'>
-                <Input
-                  label="Email: "
-                  placeholder="Enter your Email"
-                  type="email"
-                  {...register("email",{
-                    required:true,
-                    validate:{
-                        matchPattern:(value)=>/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) || 
-                        "Email address must be a valid address",
-                    }
-                  })}
-                />
-                <Input
-                  label="Password: "
-                  placeholder="Enter your Password"
-                  type="Password"
-                  {...register("password",{
-                    required:true,
-                    }
-                  )}
-                />
+    return (
+        <div className='flex items-center justify-center w-full'>
+            <div className={`mx-auto w-full max-w-lg bg-gray-100 rounded-xl p-10 border border-black/10`}>
 
-                <Button
-                type="submit"
-                className="w-full">Sign In</Button>
+                <h2 className="text-center text-2xl font-bold leading-tight">Sign in to your account</h2>
+                <p className="mt-2 text-center text-base text-black/60">
+                    Don&apos;t have an account?&nbsp;
+                    <Link
+                        to="/signup"
+                        className="font-medium text-blue-600 transition-all duration-300 ease-in-out hover:text-blue-800 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
+                    >
+                        Sign Up
+                    </Link>
+                </p>
+                <p className="mt-2 text-center text-base text-black/60">
+                    <Link
+                        to="/forget"
+                        className="font-medium text-blue-600 transition-all duration-300 ease-in-out hover:text-blue-800 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
+                    >
+                        Forgot password?
+                    </Link>
+                </p>
+
+                {error && <p className='text-red-500  text-center'>{error}</p>}
+                <form onSubmit={handleSubmit(login)} className='mt-8'>
+                    <div className='space-y-5'>
+                        <Input
+                            label="Email: "
+                            placeholder="Enter your Email"
+                            type="email"
+                            {...register("email", {
+                                required: true,
+                                validate: {
+                                    matchPattern: (value) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
+                                        "Email address must be a valid address",
+                                }
+                            })}
+                        />
+                        <div className="relative">
+                            <Input
+                                label="Password: "
+                                placeholder="Enter your Password"
+                                type={isPasswordVisible ? "text" : "password"}
+                                {...register("password", {
+                                    required: true,
+                                })}
+                            />
+                            <button
+                                type="button"
+                                className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                                onClick={togglePasswordVisibility}
+                                style={{
+                                    background: 'transparent',
+                                    border: 'none',
+                                    cursor: 'pointer',
+                                }}
+                            >
+                                {isPasswordVisible ? '🔓' : '🔒'}
+                            </button>
+                        </div>
+
+                        <Button
+                            type="submit"
+                            className="w-full">Sign In</Button>
+                    </div>
+                </form>
             </div>
-        </form>
+            <ToastContainer />
         </div>
-        <ToastContainer />
-    </div>
-  )
+    )
 }
 
 export default Login
