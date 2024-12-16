@@ -118,9 +118,29 @@ export default function PostForm({ post }) {
                     className="mb-4"
                     {...register("status", { required: true })}
                 />
-                <Button type="submit" bgColor={post ? "bg-green-500" : undefined} className="w-full">
-                    {post ? "Update" : "Submit"}
-                </Button>
+               <Button 
+    type="submit" 
+    style={{
+        width: "100%",
+        backgroundColor: post ? "#10B981" : "#3B82F6", // Green for "Update", Blue for "Submit"
+        color: "white",
+        padding: "10px 20px",
+        border: "none",
+        borderRadius: "5px",
+        cursor: "pointer",
+        fontSize: "16px",
+        transition: "background-color 0.3s ease",
+    }}
+    onMouseEnter={(e) => {
+        e.target.style.backgroundColor = post ? "#059669" : "#2563EB"; // Darker shade on hover
+    }}
+    onMouseLeave={(e) => {
+        e.target.style.backgroundColor = post ? "#10B981" : "#3B82F6"; // Original color on leave
+    }}
+>
+    {post ? "Update" : "Submit"}
+</Button>
+
             </div>
         </form>
     );
