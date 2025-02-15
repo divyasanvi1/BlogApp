@@ -62,7 +62,7 @@ const App = () => {
                             },
                             number: {
                                 density: { enable: true, area: 800 },
-                                value: 1350,
+                                value: 650,
                             },
                             opacity: { value: 0.5 },
                             shape: { type: "circle" },

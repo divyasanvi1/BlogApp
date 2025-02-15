@@ -19,7 +19,6 @@ export class Service{
              return await this.databases.createDocument(
                 config.appwriteDatabaseId,
                 config.appwriteCollectionId,
-                config.appwriteActivityCollectionId,
                 slug,
                 {
                     title,
@@ -62,7 +61,6 @@ export class Service{
         await this.databases.deleteDocument(
             config.appwriteDatabaseId,
             config.appwriteCollectionId,
-            config.appwriteActivityCollectionId,
             slug,
         )
         return true;
