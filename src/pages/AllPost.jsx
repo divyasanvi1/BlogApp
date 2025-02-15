@@ -2,7 +2,7 @@ import React,{useState,useEffect} from 'react'
 import {Container,PostCard} from "../components/index"
 import appwriteService from "../appwrite/configuration"
 import authService from '../appwrite/auth'
-
+import ParticlesBackground from '../components/Particlesbackground';
 
 function AllPost() {
     const [posts,setPosts]=useState([])
@@ -65,6 +65,7 @@ function AllPost() {
    
   return (
     <div className='w-full py-8'>
+        <ParticlesBackground />
         <Container>
             <div className='flex flex-wrap'>
                 {posts.map((post)=>(

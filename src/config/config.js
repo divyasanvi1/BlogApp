@@ -6,6 +6,7 @@ const config={
     appwriteBucketId:String(import.meta.env.VITE_APPWRITE_BUCKET_ID), 
     appwriteApiKey:String(import.meta.env.VITE_APPWRITE_API_Key),
     redirecturl:String(import.meta.env.VITE_APPWRITE_REDIRECT_URL_DEPLOYED),
+    appwriteActivityCollectionId:String(import.meta.env.VITE_APPWRITE_ACTIVITY_COLLECTION_ID),
 }
 
 export default config

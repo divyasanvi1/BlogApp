@@ -2,22 +2,39 @@ import React,{useEffect,useState} from 'react'
 import appwriteService from "../appwrite/configuration"
 import {Container, PostCard} from "../components/index"
 import { Link } from 'react-router-dom';
+import ParticlesBackground from '../components/Particlesbackground';
 
 function Home() {
     const [posts,setPosts]=useState([])
+    const [searchTerm, setSearchTerm] = useState("");
+    const [filteredPosts, setFilteredPosts] = useState([]);
 
     useEffect(()=>{
         appwriteService.getPosts().then((posts)=>{
               if(posts)
               {
                 setPosts(posts.documents)
+                setFilteredPosts(posts.documents);
               }
         })
     },[])
+    
+    // Function to handle search when button is clicked
+    const handleSearch = () => {
+      if (searchTerm.trim() === "") {
+          setFilteredPosts(posts); // Show all posts if search is empty
+      } else {
+          const filtered = posts.filter(post =>
+              post.title.toLowerCase().includes(searchTerm.toLowerCase())
+          );
+          setFilteredPosts(filtered);
+      }
+  };
 
     if (posts.length === 0) {
         return (
           <div className="w-full py-8 mt-4 text-center">
+            <ParticlesBackground />
           <Container>
             <div className="flex flex-wrap justify-center">
               <div className="p-2 w-full">
@@ -51,9 +68,25 @@ function Home() {
     }
     return (
         <div className='w-full py-8'>
+          <ParticlesBackground />
             <Container>
+            <div className="flex justify-center mb-6">
+                        <input
+                            type="text"
+                            placeholder="Search posts..."
+                            className="border rounded-lg p-2 w-1/2"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                        <button
+                            onClick={handleSearch}
+                            className="ml-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                        >
+                            Search
+                        </button>
+                    </div>
                 <div className='flex flex-wrap'>
-                    {posts.map((post) => (
+                    {filteredPosts.map((post) => (
                         <div key={post.$id} className='p-2 w-1/4'>
                             <PostCard post={post} />
                         </div>

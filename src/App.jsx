@@ -7,6 +7,9 @@ import {login,logout} from './store/authSlice';
 import Header from './components/Header/Header'
 import Footer from './components/Footer/Footer'
 import { Outlet } from 'react-router-dom';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import ParticlesBackground from './components/Particlesbackground';
 
 function App() {
   const [loading,setLoading]=useState(true)
@@ -29,15 +32,25 @@ function App() {
   },[])
 
    return !loading ? (
-   <div className='min-h-screen flex flex-wrap content-between bg-gray-400'>
-    <div className='w-full block'>
-     <Header/>
-     <main>
-      <Outlet/>
-     </main>
-     <Footer/>
-    </div>
-   </div>)
+    
+    <div className="relative min-h-screen flex flex-col">
+      <ToastContainer position="top-right" autoClose={3000} />
+
+      {/* Particle Background */}
+      <div className="absolute inset-0 z-0">
+        <ParticlesBackground />
+      </div>
+
+      {/* Content Layer */}
+      <div className="relative z-10 flex flex-col min-h-screen">
+      
+        <Header />
+        <main className="flex-grow">
+          <Outlet />
+        </main>
+        
+      </div>
+    </div>)
    : null
 }
 
