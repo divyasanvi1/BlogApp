@@ -13,31 +13,35 @@ export class AuthService{
             .setProject(config.appwriteProjectId);
         this.account=new Account(this.client)
     }
-    async createAccount({email,password,name})
-    {
-        try{
-            const userAccount=await this.account.create(ID.unique(),email,password,name);
-            console.log("hii from auth");
-            if(userAccount)
-                {
-                    console.log("hii");
-                     return this.login({email,password});
-                }
-                else
-                {
-                    return userAccount;
-                }
-        }
-        catch(error)
-        {
-            console.error("Account creation failed:", error.message); 
+    async createAccount({ email, password, name }) {
+        try {
+            // Step 1: Create the user account
+            const userAccount = await this.account.create(ID.unique(), email, password, name);
+            console.log("Account successfully created:", userAccount);
+    
+            // Step 2: Send email verification
+            var session=await this.account.createEmailPasswordSession(email,password);
+            var link=await this.account.createVerification(config.appwriteEmailVerificationId);
+            console.log("Verification email sent. Please check your inbox.");
+            await this.logout();
+    
+            return { message: "Verification email sent. Please verify before logging in." };
+        } catch (error) {
+            console.error("Account creation failed:", error.message);
             throw error;
         }
     }
+    
     async login({email,password})
     {
         try{
             const userLogin= await this.account.createEmailPasswordSession(email,password);
+            const user = await this.getCurrentUser();
+
+        if (!user.emailVerification) {
+            await this.logout();
+            throw new Error("Email not verified. Please check your inbox.");
+        }
             console.log("userLogin",userLogin);  
             console.log("JWT Token:", userLogin.jwt);
             return userLogin;
@@ -49,13 +53,17 @@ export class AuthService{
     }
     async getCurrentUser(){
         try{
-            return await this.account.get();
+            const user = await this.account.get();
+            if (!user.emailVerification) {
+                console.log("User email is not verified.");
+            }
+            return user;
         }
         catch(error)
         {
             console.log("Appwrite service :: get current user error",error);
         }
-
+        
         return null;
     }
     async logout(){

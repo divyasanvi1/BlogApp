@@ -1,100 +1,165 @@
-import React,{useEffect,useState} from 'react'
-import appwriteService from "../appwrite/configuration"
-import {Container, PostCard} from "../components/index"
-import { Link } from 'react-router-dom';
-import ParticlesBackground from '../components/Particlesbackground';
+import React, { useEffect, useState, useRef, useCallback } from "react";
+import appwriteService from "../appwrite/configuration";
+import { Container, PostCard } from "../components/index";
+import { Link } from "react-router-dom";
+import ParticlesBackground from "../components/Particlesbackground";
 
 function Home() {
-    const [posts,setPosts]=useState([])
-    const [searchTerm, setSearchTerm] = useState("");
+    const [posts, setPosts] = useState([]);
     const [filteredPosts, setFilteredPosts] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
+    const [loading, setLoading] = useState(true);  // NEW: Loading state
+    const observer = useRef(null);
 
-    useEffect(()=>{
-        appwriteService.getPosts().then((posts)=>{
-              if(posts)
-              {
-                setPosts(posts.documents)
-                setFilteredPosts(posts.documents);
-              }
-        })
-    },[])
-    
-    // Function to handle search when button is clicked
+    // Fetch posts with pagination
+    const fetchPosts = async (pageNumber) => {
+        setLoading(true); // Start loading
+        try {
+            const result = await appwriteService.getPosts(pageNumber, 5);
+            if (result && result.documents.length > 0) {
+                setPosts((prevPosts) => {
+                    const newPosts = result.documents.filter(
+                        (newPost) => !prevPosts.some((existingPost) => existingPost.$id === newPost.$id)
+                    );
+                    return [...prevPosts, ...newPosts].sort(
+                        (a, b) => new Date(b.$createdAt) - new Date(a.$createdAt)
+                    );
+                });
+
+                setFilteredPosts((prevPosts) => {
+                    const newPosts = result.documents.filter(
+                        (newPost) => !prevPosts.some((existingPost) => existingPost.$id === newPost.$id)
+                    );
+                    return [...prevPosts, ...newPosts].sort(
+                        (a, b) => new Date(b.$createdAt) - new Date(a.$createdAt)
+                    );
+                });
+            } else {
+                setHasMore(false);
+            }
+        } catch (error) {
+            console.error("Error fetching posts:", error);
+        }
+        setLoading(false); // Stop loading
+    };
+
+    useEffect(() => {
+        fetchPosts(page);
+    }, [page]);
+
+    // Intersection Observer to trigger fetch when last post is visible
+    const lastPostRef = useCallback(
+        (node) => {
+            if (!hasMore || loading) return;
+            if (observer.current) observer.current.disconnect();
+
+            observer.current = new IntersectionObserver((entries) => {
+                if (entries[0].isIntersecting) {
+                    setPage((prevPage) => prevPage + 1);
+                }
+            });
+
+            if (node) observer.current.observe(node);
+        },
+        [hasMore, loading]
+    );
+
+    // Function to handle search
     const handleSearch = () => {
-      if (searchTerm.trim() === "") {
-          setFilteredPosts(posts); // Show all posts if search is empty
-      } else {
-          const filtered = posts.filter(post =>
-              post.title.toLowerCase().includes(searchTerm.toLowerCase())
-          );
-          setFilteredPosts(filtered);
-      }
-  };
+        if (searchTerm.trim() === "") {
+            setFilteredPosts(posts);
+        } else {
+            const filtered = posts.filter((post) =>
+                post.title.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            setFilteredPosts(filtered);
+        }
+    };
 
-    if (posts.length === 0) {
+    // Show loading spinner while fetching posts
+    if (loading && posts.length === 0) {
         return (
-          <div className="w-full py-8 mt-4 text-center">
-            <ParticlesBackground />
-          <Container>
-            <div className="flex flex-wrap justify-center">
-              <div className="p-2 w-full">
-                
-                <h1 className="text-4xl font-bold text-gray-800 hover:text-blue-600 transition-colors duration-300 ease-in-out">
-                  Unlock Exclusive Content !
-                </h1>
-                
-                
-                <p className="mt-6 text-xl text-gray-600 max-w-lg mx-auto leading-relaxed tracking-wide">
-                  Discover a world of exclusive posts, in-depth articles, and expert insights available only to our members. 
-                  🚀 <Link to="/signup" className="text-blue-600 font-semibold hover:underline">Join our community today</Link> and start reading content tailored just for you.
-                </p>
-                
-                
-                <div className="mt-8">
-                  <Link to="/login">
-                    <button className="px-8 py-3 bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-700 text-white font-semibold rounded-lg shadow-lg transform hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all duration-300 ease-in-out">
-                     Explore 🚀
-                    </button>
-                  </Link>
+            <div className="w-full py-8 flex justify-center items-center min-h-screen">
+                <ParticlesBackground />
+                <div className="flex flex-col items-center justify-center h-64">
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-gray-500"></div>
+                    <p className="mt-2 text-gray-500 text-sm">Loading posts...</p>
                 </div>
-              </div>
             </div>
-          </Container>
-        </div>
-        
-          
-
-        )
+        );
     }
-    return (
-        <div className='w-full py-8'>
-          <ParticlesBackground />
-            <Container>
-            <div className="flex justify-center mb-6">
-                        <input
-                            type="text"
-                            placeholder="Search posts..."
-                            className="border rounded-lg p-2 w-1/2"
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
-                        <button
-                            onClick={handleSearch}
-                            className="ml-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-                        >
-                            Search
-                        </button>
-                    </div>
-                <div className='flex flex-wrap'>
-                    {filteredPosts.map((post) => (
-                        <div key={post.$id} className='p-2 w-1/4'>
-                            <PostCard post={post} />
+
+    // Show "No posts" message only when loading is done and posts are empty
+    if (!loading && posts.length === 0) {
+        return (
+            <div className="w-full py-8 mt-4 text-center">
+                <ParticlesBackground />
+                <Container>
+                    <div className="flex flex-wrap justify-center">
+                        <div className="p-2 w-full">
+                            <h1 className="text-4xl font-bold text-gray-800 hover:text-blue-600 transition-colors duration-300 ease-in-out">
+                                Unlock Exclusive Content!
+                            </h1>
+                            <p className="mt-6 text-xl text-gray-600 max-w-lg mx-auto leading-relaxed tracking-wide">
+                                Discover a world of exclusive posts, in-depth articles, and expert insights available only to our members. 
+                                🚀 <Link to="/signup" className="text-blue-600 font-semibold hover:underline">Join our community today</Link> and start reading content tailored just for you.
+                            </p>
+                            <div className="mt-8">
+                                <Link to="/login">
+                                    <button className="px-8 py-3 bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-700 text-white font-semibold rounded-lg shadow-lg transform hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all duration-300 ease-in-out">
+                                        Explore 🚀
+                                    </button>
+                                </Link>
+                            </div>
                         </div>
-                    ))}
-                </div>
-            </Container>
-        </div>
-    )
+                    </div>
+                </Container>
+            </div>
+        );
+    }
+
+    return (
+      <div className="w-full py-8">
+          <ParticlesBackground />
+          <Container>
+              {/* Search Bar - Responsive Width */}
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
+  {/* Search Input */}
+  <input
+    type="text"
+    placeholder="Search posts..."
+    className="border rounded-lg p-3 w-full sm:w-1/2 bg-gray-800 text-white placeholder-gray-400 focus:ring-2 focus:ring-gray-600 focus:outline-none"
+    value={searchTerm}
+    onChange={(e) => setSearchTerm(e.target.value)}
+  />
+  
+  {/* Search Button */}
+  <button
+    onClick={handleSearch}
+    className="px-6 py-3 bg-gray-700 text-white text-lg rounded-full shadow-md transition-all duration-300 ease-in-out hover:bg-gray-600 hover:scale-105 focus:ring-2 focus:ring-gray-500 focus:outline-none"
+  >
+    Search
+  </button>
+</div>
+
+              {/* Responsive Grid for Post Cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                  {filteredPosts.map((post, index) => (
+                      <div 
+                          key={post.$id} 
+                          className="p-2" 
+                          ref={index === filteredPosts.length - 1 ? lastPostRef : null}
+                      >
+                          <PostCard post={post} />
+                      </div>
+                  ))}
+              </div>
+          </Container>
+      </div>
+  );
+  
 }
 
-export default Home
+export default Home;

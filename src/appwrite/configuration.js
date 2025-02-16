@@ -108,19 +108,26 @@ export class Service{
         }
     }
 
-    async getPosts(queries=[Query.equal("status","active")]){
-        try{
-             return await this.databases.listDocuments(
+    async getPosts(page = 1, limit = 5) {
+        try {
+            const queries = [
+                Query.equal("status", "active"),
+                Query.limit(limit),               // Limit results per request
+                Query.offset((page - 1) * limit), // Offset to fetch next batch
+                Query.orderDesc("$createdAt")     // Sort by newest first
+            ];
+    
+            return await this.databases.listDocuments(
                 config.appwriteDatabaseId,
                 config.appwriteCollectionId,
                 queries
-             )
-        }
-        catch(error){
-             console.log("Appwrite service getpost:: error",error)
-             return false;
+            );
+        } catch (error) {
+            console.log("Appwrite service getPosts:: error", error);
+            return false;
         }
     }
+    
 
     // file upload and delete
     async uploadFile(file)

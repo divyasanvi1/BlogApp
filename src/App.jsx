@@ -34,7 +34,14 @@ function App() {
    return !loading ? (
     
     <div className="relative min-h-screen flex flex-col">
-      <ToastContainer position="top-right" autoClose={3000} />
+      <ToastContainer 
+       position="top-right" 
+       autoClose={3000} 
+       newestOnTop 
+       limit={5}  
+       style={{ zIndex: 9999 }} // Ensures toast is always on top
+      />
+
 
       {/* Particle Background */}
       <div className="absolute inset-0 z-0">

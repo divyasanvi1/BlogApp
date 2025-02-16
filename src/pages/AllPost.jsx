@@ -6,7 +6,7 @@ import ParticlesBackground from '../components/Particlesbackground';
 
 function AllPost() {
     const [posts,setPosts]=useState([])
-    
+    const [loading, setLoading] = useState(true);
     useEffect(() => {
         // Function to fetch the userId
         const getUserId = async () => {
@@ -57,6 +57,7 @@ function AllPost() {
                     setPosts([]); // Fallback to empty state on error
                 }
             }
+            setLoading(false);
         };
         fetchPosts();
     }, []);  // Empty dependency array to ensure this runs only once when the component mounts
@@ -67,13 +68,22 @@ function AllPost() {
     <div className='w-full py-8'>
         <ParticlesBackground />
         <Container>
-            <div className='flex flex-wrap'>
-                {posts.map((post)=>(
-                    <div key={post.$id} className='p-2 w-1/4'>
-                         <PostCard post={post}/>
+            {/* 🔹 Show Spinner When Loading */}
+            {loading ? (
+                    <div className="flex flex-col items-center justify-center h-64">
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-gray-500"></div>
+                    <p className="mt-2 text-gray-500 text-sm">Loading your stories...</p>
+                </div>
+                
+                ) : (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        {posts.map((post) => (
+                            <div key={post.$id} className="p-2">
+                                <PostCard post={post} />
+                            </div>
+                        ))}
                     </div>
-                    ))}
-            </div>
+                )}
         </Container>
     </div>
   )

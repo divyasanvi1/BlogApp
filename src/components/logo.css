@@ -1,35 +1,26 @@
-.logo {
-  font-family: 'Arial', sans-serif; /* Clean, modern font */
-  font-size: 2.5rem; /* Emphasis on the logo */
-  font-weight: bold; /* Bold for prominence */
-  background: linear-gradient(90deg, #007BFF, #0056b3); /* Gradient matching buttons */
-  -webkit-text-fill-color: transparent; /* Transparent fill to show gradient */
-  text-transform: uppercase; /* Uppercase for a bold look */
-  text-align: center; /* Center-align text */
-  padding: 10px; /* Space around the logo */
-  letter-spacing: 0.1em; /* Slight spacing for clarity */
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.15); /* Subtle shadow for depth */
-  animation: fadeIn 1.2s ease-in-out; /* Smooth fade-in effect */
-  border-radius: 8px; /* Rounded edges for a modern look */
-}
-  
-/* Fade-in animation */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Center the logo container */
+.logo-container {
+  text-align: center;
+  margin: 10px auto;
+  padding: 5px 0;
 }
 
-/* Add hover effect for interactivity */
-.logo:hover {
-  transform: scale(1.05); /* Slight scaling on hover */
-  background: linear-gradient(90deg, #0056b3, #004080); /* Darker gradient on hover */
-  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+/* Styling for the logo text */
+.logo-text {
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-weight: bold;
+  font-family: "Poppins", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  background: linear-gradient(90deg, #777, #555, #333); /* Gradient in grey tones */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 2px 2px 8px rgba(150, 150, 150, 0.4); /* Softer glow effect */
+  transition: transform 0.3s ease-in-out, text-shadow 0.3s ease-in-out;
 }
 
-  
+/* Hover effect for interactivity */
+.logo-text:hover {
+  transform: scale(1.1);
+  text-shadow: 4px 4px 12px rgba(180, 180, 180, 0.6); /* Increased glow */
+}

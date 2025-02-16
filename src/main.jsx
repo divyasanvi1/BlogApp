@@ -18,6 +18,7 @@ import Recover from './components/password/Recover.jsx'
 import Notfound from './pages/NotFound.jsx'
 import AboutUs from './pages/About.jsx'
 import ContactUs from './pages/Contact.jsx'
+import Verify from './components/Verify.jsx'
 
 
 const router=createBrowserRouter([
@@ -99,6 +100,10 @@ const router=createBrowserRouter([
       {
         path: "/contact",  // Contact Us page route
         element: <ContactUs />
+      },
+      {
+        path:"/Verify",
+        element:<Verify/>
       },
       {
         path: '*',  
