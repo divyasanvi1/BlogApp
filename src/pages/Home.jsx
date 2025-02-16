@@ -97,24 +97,28 @@ function Home() {
             <div className="w-full py-8 mt-4 text-center">
                 <ParticlesBackground />
                 <Container>
-                    <div className="flex flex-wrap justify-center">
-                        <div className="p-2 w-full">
-                            <h1 className="text-4xl font-bold text-gray-800 hover:text-blue-600 transition-colors duration-300 ease-in-out">
-                                Unlock Exclusive Content!
-                            </h1>
-                            <p className="mt-6 text-xl text-gray-600 max-w-lg mx-auto leading-relaxed tracking-wide">
-                                Discover a world of exclusive posts, in-depth articles, and expert insights available only to our members. 
-                                🚀 <Link to="/signup" className="text-blue-600 font-semibold hover:underline">Join our community today</Link> and start reading content tailored just for you.
-                            </p>
-                            <div className="mt-8">
-                                <Link to="/login">
-                                    <button className="px-8 py-3 bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-700 text-white font-semibold rounded-lg shadow-lg transform hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all duration-300 ease-in-out">
-                                        Explore 🚀
-                                    </button>
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
+                <div className="flex flex-col items-center text-center min-h-[50vh] w-full px-6 relative z-10">
+  <h1 className="text-4xl font-extrabold text-gray-200 hover:text-blue-400 transition-colors duration-300 ease-in-out drop-shadow-lg">
+    Unlock Exclusive Content!
+  </h1>
+  
+  <p className="mt-6 text-lg text-gray-300 max-w-lg leading-relaxed tracking-wide">
+    Discover a world of exclusive posts, in-depth articles, and expert insights available only to our members. 🚀  
+    <Link to="/signup" className="text-blue-400 font-semibold hover:underline hover:text-blue-300 transition-all">
+      Join our community today
+    </Link> and start reading content tailored just for you.
+  </p>
+
+  <div className="mt-8">
+    <Link to="/login">
+      <button className="px-8 py-3 bg-gray-700 text-white rounded-full font-semibold shadow-md hover:bg-gray-600 transition duration-300 focus:outline-none focus:ring-4 focus:ring-blue-400">
+        Explore 🚀
+      </button>
+    </Link>
+  </div>
+</div>
+
+
                 </Container>
             </div>
         );

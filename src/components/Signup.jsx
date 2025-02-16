@@ -39,70 +39,97 @@ function Signup() {
     };
 
     return (
-        <div className='flex items-center justify-center w-full'>
-            <div className={`mx-auto w-full max-w-lg bg-gray-100 rounded-xl p-10 border border-black/10`}>
-                <h2 className="text-center text-2xl font-bold leading-tight">Sign Up to Create your account</h2>
-                <p className="mt-2 text-center text-base text-black/60">
-                    Already have an account?&nbsp;
-                    <Link
-                        to="/login"
-                        className="font-medium text-blue-600 transition-all duration-200 hover:text-blue-800 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
-                    >
-                        Sign In
-                    </Link>
-                </p>
-                {error && <p className='text-red-500  text-center'>{error}</p>}
-                <form onSubmit={handleSubmit(create)} className='mt-8'>
-                    <div className='space-y-5'>
-                        <Input
-                            label="Name: "
-                            placeholder="Enter your Name"
-                            {...register("name", {
-                                required: true,
-                            })}
-                        />
-                        <Input
-                            label="Email: "
-                            placeholder="Enter your Email"
-                            type="email"
-                            {...register("email", {
-                                required: true,
-                                validate: {
-                                    matchPattern: (value) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
-                                        "Email address must be a valid address",
-                                }
-                            })}
-                        />
-                        <div className="relative">
-                            <Input
-                                label="Password: "
-                                placeholder="Enter your Password"
-                                type={isPasswordVisible ? "text" : "password"}
-                                {...register("password", {
-                                    required: true,
-                                })}
-                            />
-                            <button
-                                type="button"
-                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-xl"
-                                onClick={togglePasswordVisibility}
-                                style={{
-                                    background: 'transparent',
-                                    border: 'none',
-                                    cursor: 'pointer',
-                                }}
-                            >
-                                {isPasswordVisible ? '🔓' : '🔒'}
-                            </button>
-                        </div>
+        <div className="flex items-center justify-center min-h-screen w-full px-4 relative">
+  <div className="absolute inset-0 z-0">
+    {/* Your Particle Background Component Goes Here */}
+  </div>
 
-                        <Button
-                            type="submit"
-                            className="w-full">Create Account</Button>
-                    </div>
-                </form>
-            </div>
-        </div>
+  <div className="relative z-10 w-full max-w-lg bg-gray-800/30 border border-gray-500 shadow-lg rounded-xl p-10 mt-[-250px]">
+    <h2 className="text-center text-2xl font-bold text-gray-200">Sign Up to Create your Account</h2>
+
+    <p className="mt-2 text-center text-base text-gray-300">
+      Already have an account?&nbsp;
+      <Link
+        to="/login"
+        className="font-medium text-gray-400 hover:text-gray-200 transition duration-300"
+      >
+        Sign In
+      </Link>
+    </p>
+
+    {error && <p className="text-red-400 text-center mt-3">{error}</p>}
+
+    <form onSubmit={handleSubmit(create)} className="mt-8 space-y-6">
+      <div>
+        <label className="block text-sm font-medium text-gray-300">Name</label>
+        <input
+          type="text"
+          placeholder="Enter your Name"
+          {...register("name", { required: true })}
+          className="w-full mt-1 px-4 py-2 bg-gray-900 text-white border border-gray-600 rounded-lg shadow-sm focus:ring-gray-400 focus:border-gray-400 appearance-none autofill:bg-transparent"
+          style={{
+            WebkitBoxShadow: "0 0 0px 1000px transparent inset",
+            WebkitTextFillColor: "white",
+            backgroundClip: "text",
+            appearance: "none",
+          }}
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-300">Email</label>
+        <input
+          type="email"
+          placeholder="Enter your Email"
+          {...register("email", {
+            required: "Email is required",
+            pattern: {
+              value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
+              message: "Invalid email address",
+            },
+          })}
+          className="w-full mt-1 px-4 py-2 bg-gray-900 text-white border border-gray-600 rounded-lg shadow-sm focus:ring-gray-400 focus:border-gray-400 appearance-none autofill:bg-transparent"
+          style={{
+            WebkitBoxShadow: "0 0 0px 1000px transparent inset",
+            WebkitTextFillColor: "white",
+            backgroundClip: "text",
+            appearance: "none",
+          }}
+        />
+      </div>
+
+      <div className="relative">
+        <label className="block text-sm font-medium text-gray-300">Password</label>
+        <input
+          type={isPasswordVisible ? "text" : "password"}
+          placeholder="Enter your Password"
+          {...register("password", { required: true })}
+          className="w-full mt-1 px-4 py-2 bg-gray-900 text-white border border-gray-600 rounded-lg shadow-sm focus:ring-gray-400 focus:border-gray-400 pr-10 appearance-none autofill:bg-transparent"
+          style={{
+            WebkitBoxShadow: "0 0 0px 1000px transparent inset",
+            WebkitTextFillColor: "white",
+            backgroundClip: "text",
+            appearance: "none",
+          }}
+        />
+        <button
+          type="button"
+          className="absolute right-3 top-10 transform -translate-y-1/2 text-gray-400 hover:text-gray-200"
+          onClick={togglePasswordVisibility}
+        >
+          {isPasswordVisible ? "🔓" : "🔒"}
+        </button>
+      </div>
+
+      <button
+        type="submit"
+        className="w-full bg-gray-700 text-white py-2 rounded-lg font-semibold shadow-md hover:bg-gray-600 transition duration-300"
+      >
+        Create Account
+      </button>
+    </form>
+  </div>
+</div>
     );
 }
 
