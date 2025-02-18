@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
-import { loadSlim } from "@tsparticles/slim"; // Ensure package is installed
+import { loadSlim } from "@tsparticles/slim"; 
 
 const App = () => {
     const [init, setInit] = useState(false);

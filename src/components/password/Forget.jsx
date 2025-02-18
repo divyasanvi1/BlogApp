@@ -21,7 +21,6 @@ const Forget=()=>{
       };
     return( 
       <div className="relative min-h-screen flex flex-col">
-          {/* Always render Particle Background */}
           <Particlesbackground />
       
           <div className="flex flex-col items-center justify-center min-h-screen relative z-10">

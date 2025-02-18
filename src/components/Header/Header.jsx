@@ -39,9 +39,9 @@ function Header() {
                         </Link>
                     </div>
 
-                    {/* Navigation items */}
+                   
                     <ul className="hidden md:flex space-x-6 ml-auto">
-                        {/* Home Button (Icon only) */}
+                       
                         <li>
                         <button
         onClick={() => navigate("/")}
@@ -51,7 +51,7 @@ function Header() {
         </button>
                         </li>
 
-                        {/* SignIn Button */}
+                        
                         {!authStatus && (
                             <li>
                                <button
@@ -67,7 +67,7 @@ function Header() {
                         )}
                     </ul>
 
-                    {/* User Profile Dropdown (Only when logged in) */}
+                    
                     {authStatus && (
     <div className="relative group" ref={dropdownRef}>
         <button
@@ -76,7 +76,7 @@ function Header() {
             {userEmail.charAt(0).toUpperCase()}
         </button>
 
-        {/* Dropdown appears on hover */}
+        
         <div className="absolute right-0 mt-2 w-48 bg-gray-800 text-white rounded-lg shadow-lg overflow-hidden z-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <button
                 onClick={() => navigate("/all-posts")}
@@ -97,9 +97,6 @@ function Header() {
         </div>
     </div>
 )}
-
-
-                    {/* Mobile menu toggle */}
                     <div className="md:hidden">
                         <button
                             className="text-gray-700 focus:outline-none"
@@ -122,7 +119,7 @@ function Header() {
                         </button>
                     </div>
 
-                    {/* Mobile menu */}
+                    
                     {isMenuOpen && (
                         <div className="md:hidden flex flex-col space-y-4 mt-4">
                             <button

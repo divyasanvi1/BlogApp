@@ -39,8 +39,7 @@ function PostCard({ post: { $id, title, featuredImage } }) {
       document.body.removeChild(a);
 
       setTimeout(() => URL.revokeObjectURL(url), 1000);
-      console.log("Toast Triggering:", toast);
-
+     
       
       console.log("toastdownloadcomplete");
     } catch (error) {
