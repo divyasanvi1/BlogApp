@@ -23,6 +23,7 @@ export class AuthService{
             var session=await this.account.createEmailPasswordSession(email,password);
             var link=await this.account.createVerification(config.appwriteEmailVerificationId);
             console.log("Verification email sent. Please check your inbox.");
+            alert("Verification email sent. Please check your inbox.");
             await this.logout();
     
             return { message: "Verification email sent. Please verify before logging in." };
