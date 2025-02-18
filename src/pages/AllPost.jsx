@@ -68,22 +68,27 @@ function AllPost() {
     <div className='w-full py-8'>
         <ParticlesBackground />
         <Container>
-            {/* 🔹 Show Spinner When Loading */}
-            {loading ? (
-                    <div className="flex flex-col items-center justify-center h-64">
-                    <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-gray-500"></div>
-                    <p className="mt-2 text-gray-500 text-sm">Loading your stories...</p>
+        {loading ? (
+          <div className="flex flex-col items-center justify-center h-64">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-gray-500"></div>
+            <p className="mt-2 text-gray-500 text-sm">Loading your stories...</p>
+          </div>
+        ) : (
+         
+          posts.length === 0 ? (
+            <div className="flex flex-col items-center justify-center h-64">
+              <p className="text-gray-500 text-xl">No Posts Available...</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {posts.map((post) => (
+                <div key={post.$id} className="p-2">
+                  <PostCard post={post} />
                 </div>
-                
-                ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                        {posts.map((post) => (
-                            <div key={post.$id} className="p-2">
-                                <PostCard post={post} />
-                            </div>
-                        ))}
-                    </div>
-                )}
+              ))}
+            </div>
+          )
+        )}
         </Container>
     </div>
   )

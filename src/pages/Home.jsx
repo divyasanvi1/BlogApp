@@ -91,7 +91,7 @@ function Home() {
         );
     }
 
-    // Show "No posts" message only when loading is done and posts are empty
+   
     if (!loading && posts.length === 0) {
         return (
             <div className="w-full py-8 mt-4 text-center">
@@ -110,7 +110,7 @@ function Home() {
   </p>
 
   <div className="mt-8">
-    <Link to="/login">
+    <Link to="/about">
       <button className="px-8 py-3 bg-gray-700 text-white rounded-full font-semibold shadow-md hover:bg-gray-600 transition duration-300 focus:outline-none focus:ring-4 focus:ring-blue-400">
         Explore 🚀
       </button>
