@@ -41,8 +41,6 @@ function App() {
        limit={5}  
        style={{ zIndex: 9999 }} // Ensures toast is always on top
       />
-
-
       {/* Particle Background */}
       <div className="absolute inset-0 z-0">
         <ParticlesBackground />

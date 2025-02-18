@@ -40,15 +40,15 @@ export default function Post() {
 
     return (
       <div className="relative min-h-screen flex flex-col items-center justify-center">
-        {/* Always render Particles Background */}
+        
         <ParticlesBackground />
     
         {post ? (
           <div className="py-8 flex justify-center relative z-10">
-            {/* Post Card (Grows Dynamically) */}
+            
             <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 inline-block">
               
-              {/* Image Container */}
+             
               <div className="relative w-full max-w-[600px]">
                 <img
                   src={appwriteService.getFilePreview(post.featuredImage)}
@@ -56,7 +56,7 @@ export default function Post() {
                   className="rounded-xl object-cover w-full h-auto"
                 />
     
-                {/* Edit & Delete Buttons (Inside Image) */}
+               
                 {isAuthor && (
                   <div className="absolute top-3 right-3 flex space-x-2 bg-opacity-50 bg-black p-2 rounded-md">
                     <Link to={`/edit-post/${post.$id}`}>
@@ -69,12 +69,12 @@ export default function Post() {
                 )}
               </div>
     
-              {/* Title */}
+              
               <div className="text-center mt-4 px-4">
                 <h1 className="text-2xl font-bold break-words">{post.title}</h1>
               </div>
     
-              {/* Content (Expands Dynamically) */}
+              
               <div className="mt-4 px-4 text-justify break-words max-w-[600px]">
                 {parse(post.content)}
               </div>

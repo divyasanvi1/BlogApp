@@ -30,7 +30,6 @@ function EditPost() {
 
     return (
         <div className="relative min-h-screen flex flex-col">
-          {/* Always render Particle Background */}
           <ParticlesBackground />
       
           {post ? (
