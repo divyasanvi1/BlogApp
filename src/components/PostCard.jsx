@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import appwriteService from "../appwrite/configuration";
 import { Link } from "react-router-dom";
 import { FaDownload } from "react-icons/fa";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
 
 function PostCard({ post: { $id, title, featuredImage } }) {
   const [imageSrc, setImageSrc] = useState("");
@@ -27,10 +26,7 @@ function PostCard({ post: { $id, title, featuredImage } }) {
     e.preventDefault();
 
     try {
-      toast.info("📥 Download started...", { autoClose: 2000 });
-      console.log("Toast Triggering:", toast);
-
-     console.log("toastdownload");
+      
       const response = await fetch(appwriteService.getFilePreview(featuredImage));
       const blob = await response.blob();
       const url = URL.createObjectURL(blob);
@@ -45,11 +41,11 @@ function PostCard({ post: { $id, title, featuredImage } }) {
       setTimeout(() => URL.revokeObjectURL(url), 1000);
       console.log("Toast Triggering:", toast);
 
-      toast.success("✅ Download complete!", { autoClose: 3000 });
+      
       console.log("toastdownloadcomplete");
     } catch (error) {
       console.error("Download failed:", error);
-      toast.error("❌ Download failed. Try again!");
+      
     }
   };
 
