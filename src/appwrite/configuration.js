@@ -76,7 +76,7 @@ export class Service{
      async getFeaturedImageByUserId (userId){
         try {
             const response = await this.databases.listDocuments(
-                config.appwriteDatabaseId,                // Your Appwrite Database ID
+                config.appwriteDatabaseId,                //  Appwrite Database ID
                 config.appwriteCollectionId, // Collection ID for featured images
                 [Query.equal("userId", userId)]           // Query for userId
             );
